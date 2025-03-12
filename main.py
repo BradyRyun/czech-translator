@@ -38,7 +38,9 @@ def read_czech_words(input_file: str) -> List[str]:
 def translate_word(word: str, openai_api_key: str) -> TranslationResult:
     """Send a word to OpenAI API and get translation information."""
     try:
+        # Create the client without any proxy settings
         client = OpenAI(api_key=openai_api_key)
+        
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # You can change this to a different model if needed
             messages=[
@@ -138,7 +140,6 @@ def main():
     if not openai_api_key:
         raise ValueError("OPENAI_API_KEY environment variable is not set")
     
-    print(f"Reading Czech words from {input_file}...")
     words = read_czech_words(input_file)
     print(f"Found {len(words)} words to translate")
     print(f"Using {max_workers} parallel workers")
