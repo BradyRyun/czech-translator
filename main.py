@@ -35,14 +35,14 @@ def read_czech_words(input_file: str) -> List[str]:
     
     return words
 
-def translate_word(word: str, openai_api_key: str) -> TranslationResult:
+def translate_word(word: str, openai_api_key: str, model: str) -> TranslationResult:
     """Send a word to OpenAI API and get translation information."""
     try:
         # Create the client without any proxy settings
         client = OpenAI(api_key=openai_api_key)
         
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # You can change this to a different model if needed
+            model=model,  # You can change this to a different model if needed
             messages=[
                 {
                     "role": "system",
@@ -124,6 +124,8 @@ def parse_arguments():
                         help='OpenAI API key (default: OPENAI_API_KEY environment variable)')
     parser.add_argument('-w', '--workers', type=int, default=5,
                         help='Number of parallel workers (default: 5)')
+    parser.add_argument('-m', '--model', type=str, default="gpt-4o-mini",
+                        help='OpenAI model to use (default: gpt-4o-mini)')
     return parser.parse_args()
 
 def main():
@@ -133,6 +135,7 @@ def main():
     output_file = args.output
     openai_api_key = args.key
     max_workers = args.workers
+    model = args.model
     
     if not openai_api_key:
         openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -158,7 +161,7 @@ def main():
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all translation tasks
             future_to_word = {
-                executor.submit(translate_word, word, openai_api_key): word 
+                executor.submit(translate_word, word, openai_api_key, model): word
                 for word in words
             }
             

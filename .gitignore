@@ -173,5 +173,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-*.csv
+czech_translations.csv
+czech_words.csv
 *.tsv
