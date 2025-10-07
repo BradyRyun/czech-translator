@@ -37,7 +37,7 @@ python main.py
 
 
 ### Additional Options
-* If you want to use a different input/output file names, you can pass them as arguments to the script. Here's the arguments:
+* Here's the options you can pass to the script if you want to change some things
 ```
 -i, --input <input_file_name> # input file name, czech_words.csv = default
 -o, --output <output_file_name> # Output file name, czech_translation.csv = default
